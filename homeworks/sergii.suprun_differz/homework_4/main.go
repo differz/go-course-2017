@@ -1,5 +1,6 @@
 package main
 
+<<<<<<< HEAD
 import "fmt"
 
 import "github.com/differz/go-course-2017/homeworks/sergii.suprun_differz/homework_4/linkedlist"
@@ -9,6 +10,14 @@ func main() {
 
 	var list list.List
 	list = linkedlist.New()
+=======
+import "github.com/differz/go-course-2017/homeworks/sergii.suprun_differz/homework_4/linkedlist"
+import "fmt"
+
+func main() {
+
+	list := linkedlist.New()
+>>>>>>> MastersAcademy/master
 
 	list.Add("element 0")
 	list.Add("element 1")

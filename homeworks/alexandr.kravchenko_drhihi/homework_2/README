@@ -1,0 +1,15 @@
+This application can take arguments and prints а line from the template "Hello World from {arguments}." .
+The default argument is "alexandr.kravchenko_drhihi"
+
+
+Example:
+
+./hello
+Hello World from alexandr.kravchenko_drhihi
+
+./hello arg1
+Hello World from arg1
+
+./hello arg1 arg2
+Hello World from arg1 arg2
+

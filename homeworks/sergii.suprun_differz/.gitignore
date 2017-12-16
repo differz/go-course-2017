@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # IDE
 debug
 .idea
@@ -13,3 +14,7 @@ debug
 
 TEMP.txt
 
+=======
+.vscode
+debug
+>>>>>>> MastersAcademy/master
