@@ -9,19 +9,33 @@ import (
 	"github.com/differz/go-course-2017/homeworks/sergii.suprun_differz/homework_5/shapes"
 )
 
+const (
+	EMPTY = iota
+	CORNER1
+	CORNER2
+	CORNER3
+	CORNER4
+	RANDOM
+)
+
 type MyBox struct {
 	n     int
 	x     int
 	state int
 	box   []shapes.Shaper
+	len   int
+	q     int
 }
 
 func NewMyBox(n int, x int) (BlackBoxer, error) {
 	return &MyBox{
 			n:     n,
 			x:     x,
-			state: 0,
-			box:   []shapes.Shaper{}},
+			state: EMPTY,
+			box:   []shapes.Shaper{},
+			len:   n / x,
+			q:     (n / x) * (n / x),
+		},
 		nil
 }
 
@@ -50,48 +64,49 @@ func (b *MyBox) String() string {
 }
 
 func (b *MyBox) Generate() {
-	usedNames := shapes.GetAvailable()
-	x := strconv.Itoa(b.x)
-	k := b.n / b.x
-
+	names := shapes.GetAvailable()
 	rand.Seed(time.Now().UnixNano())
-	for i := 0; i < k*k; i++ {
-		j := rand.Intn(len(usedNames))
-		shape, _ := shapes.Create(map[string]string{"SHAPE": usedNames[j], "X": x})
+	b.state = RANDOM
+	for i := 0; i < b.q; i++ {
+		j := rand.Intn(len(names))
+		shape, _ := shapes.Create(names[j], b.x)
 		b.box = append(b.box, shape)
 	}
 }
 
 func (b *MyBox) Shake(corner int) {
 	index := 0
-	k := b.n / b.x
-	t := make([]shapes.Shaper, k*k)
-
+	mb := make([]shapes.Shaper, b.q)
 	sort.Sort(shapes.ByWeight(b.box))
 
-	for i := 0; i < k; i++ {
-		for j, ii := 0, i; j <= i; j, ii = j+1, ii-1 {
-			direct := b.box[index]
-			reverse := b.box[k*k-index-1]
+	for n := 0; n < b.len; n++ {
+		for i, j := 0, n; i <= n; i, j = i+1, j-1 {
+			dir := b.box[index]
+			rev := b.box[b.q-index-1]
+			index++
+
+			x := (b.len - 1 - j) * b.len
+			y := b.len - 1 - i
+			z := j * b.len
+
 			switch corner {
-			case 1:
-				t[ii*k+j] = direct
-				t[(k-ii-1)*k+k-j-1] = reverse
-			case 2:
-				t[ii*k+k-j-1] = direct
-				t[(k-ii-1)*k+j] = reverse
-			case 3:
-				t[(k-ii-1)*k+j] = direct
-				t[ii*k+k-j-1] = reverse
-			case 4:
-				t[(k-ii-1)*k+k-j-1] = direct
-				t[ii*k+j] = reverse
+			case CORNER1:
+				mb[z+i] = dir
+				mb[x+y] = rev
+			case CORNER2:
+				mb[y+z] = dir
+				mb[x+i] = rev
+			case CORNER3:
+				mb[x+i] = dir
+				mb[y+z] = rev
+			case CORNER4:
+				mb[x+y] = dir
+				mb[z+i] = rev
 			default:
 				return
 			}
-			index++
 		}
 	}
-	b.box = t
 	b.state = corner
+	b.box = mb
 }

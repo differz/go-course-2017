@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type ShapeFactory func(conf map[string]string) (Shaper, error)
+type ShapeFactory func(x int) (Shaper, error)
 
 var shapeFactories = make(map[string]ShapeFactory)
 
@@ -22,22 +22,12 @@ func Register(name string, factory ShapeFactory) {
 	shapeFactories[name] = factory
 }
 
-func init() {
-	Register("cone", NewCone)
-	Register("cube", NewCube)
-	Register("cylinder", NewCylinder)
-	Register("prizm", NewPrizm)
-	Register("pyramid", NewPyramid)
-	Register("sphere", NewSphere)
-}
-
-func Create(conf map[string]string) (Shaper, error) {
-	shapeName := conf["SHAPE"]
-	shapeFactory, ok := shapeFactories[shapeName]
+func Create(name string, x int) (Shaper, error) {
+	shapeFactory, ok := shapeFactories[name]
 	if !ok {
 		return nil, fmt.Errorf("Invalid shape name. Must be one of: %s", strings.Join(GetAvailable(), ", "))
 	}
-	return shapeFactory(conf)
+	return shapeFactory(x)
 }
 
 func GetAvailable() []string {

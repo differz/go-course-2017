@@ -5,7 +5,6 @@ const K = 1.0
 
 // Shape is common interface for all shapes
 type Shaper interface {
-	Shape() string
 	Weight() int
 	String() string
 }
