@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 
@@ -25,19 +26,23 @@ func main() {
 		return
 	}
 
-	box, _ := boxes.NewMyBox(n, x)
+	box, err := boxes.NewMyBox(n, x)
+	if err != nil {
+		log.Panicf("Cant create box")
+	}
+
 	box.Generate()
 	fmt.Println("New box generated: \n" + box.PrintWeight())
 
-	box.Shake(1)
+	box.Shake(boxes.ByCorner1)
 	fmt.Println("Shake in corner 1: \n" + box.PrintWeight())
 
-	box.Shake(2)
+	box.Shake(boxes.ByCorner2)
 	fmt.Println("Shake in corner 2: \n" + box.PrintWeight())
 
-	box.Shake(3)
+	box.Shake(boxes.ByCorner3)
 	fmt.Println("Shake in corner 3: \n" + box.PrintWeight())
 
-	box.Shake(4)
+	box.Shake(boxes.ByCorner4)
 	fmt.Println("Shake in corner 4: \n" + box.PrintWeight())
 }

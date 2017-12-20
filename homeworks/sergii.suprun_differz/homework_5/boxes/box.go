@@ -3,7 +3,7 @@ package boxes
 // Boxer is common interface for all boxes
 type Boxer interface {
 	IsEmpty() bool
-	GetState() int
+	GetState() StateType
 	PrintWeight() string
 	String() string
 }
@@ -15,7 +15,7 @@ type Generator interface {
 
 // Shaker makes sorting
 type Shaker interface {
-	Shake(int)
+	Shake(StateType)
 }
 
 // BlackBoxer combined box

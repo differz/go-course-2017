@@ -1,6 +1,7 @@
 package boxes
 
 import (
+	"log"
 	"math/rand"
 	"sort"
 	"strconv"
@@ -9,19 +10,21 @@ import (
 	"github.com/MastersAcademy/go-course-2017/homeworks/sergii.suprun_differz/homework_5/shapes"
 )
 
+type StateType int
+
 const (
-	EMPTY = iota
-	CORNER1
-	CORNER2
-	CORNER3
-	CORNER4
-	RANDOM
+	EmptyState StateType = iota
+	ByCorner1
+	ByCorner2
+	ByCorner3
+	ByCorner4
+	RandomState
 )
 
 type MyBox struct {
 	n     int
 	x     int
-	state int
+	state StateType
 	box   []shapes.Shaper
 	len   int
 	q     int
@@ -31,7 +34,7 @@ func NewMyBox(n int, x int) (BlackBoxer, error) {
 	return &MyBox{
 			n:     n,
 			x:     x,
-			state: EMPTY,
+			state: EmptyState,
 			box:   []shapes.Shaper{},
 			len:   n / x,
 			q:     (n / x) * (n / x),
@@ -43,7 +46,7 @@ func (b *MyBox) IsEmpty() bool {
 	return len(b.box) == 0
 }
 
-func (b *MyBox) GetState() int {
+func (b *MyBox) GetState() StateType {
 	return b.state
 }
 
@@ -66,15 +69,18 @@ func (b *MyBox) String() string {
 func (b *MyBox) Generate() {
 	names := shapes.GetAvailable()
 	rand.Seed(time.Now().UnixNano())
-	b.state = RANDOM
+	b.state = RandomState
 	for i := 0; i < b.q; i++ {
 		j := rand.Intn(len(names))
-		shape, _ := shapes.Create(names[j], b.x)
+		shape, err := shapes.Create(names[j], b.x)
+		if err != nil {
+			log.Panicf("Cant create %s: ", names[j])
+		}
 		b.box = append(b.box, shape)
 	}
 }
 
-func (b *MyBox) Shake(corner int) {
+func (b *MyBox) Shake(corner StateType) {
 	index := 0
 	mb := make([]shapes.Shaper, b.q)
 	sort.Sort(shapes.ByWeight(b.box))
@@ -90,16 +96,16 @@ func (b *MyBox) Shake(corner int) {
 			z := j * b.len
 
 			switch corner {
-			case CORNER1:
+			case ByCorner1:
 				mb[z+i] = dir
 				mb[x+y] = rev
-			case CORNER2:
+			case ByCorner2:
 				mb[y+z] = dir
 				mb[x+i] = rev
-			case CORNER3:
+			case ByCorner3:
 				mb[x+i] = dir
 				mb[y+z] = rev
-			case CORNER4:
+			case ByCorner4:
 				mb[x+y] = dir
 				mb[z+i] = rev
 			default:
