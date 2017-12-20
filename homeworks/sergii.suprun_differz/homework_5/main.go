@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/differz/go-course-2017/homeworks/sergii.suprun_differz/homework_5/boxes"
+	"github.com/MastersAcademy/go-course-2017/homeworks/sergii.suprun_differz/homework_5/boxes"
 )
 
 func main() {

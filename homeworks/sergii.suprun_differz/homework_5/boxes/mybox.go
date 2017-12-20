@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/differz/go-course-2017/homeworks/sergii.suprun_differz/homework_5/shapes"
+	"github.com/MastersAcademy/go-course-2017/homeworks/sergii.suprun_differz/homework_5/shapes"
 )
 
 const (
