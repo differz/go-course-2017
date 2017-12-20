@@ -2,8 +2,8 @@ package main
 
 import "fmt"
 
-import "github.com/differz/go-course-2017/homeworks/sergii.suprun_differz/homework_4/linkedlist"
-import "github.com/differz/go-course-2017/homeworks/sergii.suprun_differz/homework_4/list"
+import "github.com/MastersAcademy/go-course-2017/homeworks/sergii.suprun_differz/homework_4/linkedlist"
+import "github.com/MastersAcademy/go-course-2017/homeworks/sergii.suprun_differz/homework_4/list"
 
 func main() {
 
